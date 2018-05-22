@@ -1,15 +1,36 @@
 const initialState = {
-  todos: [
-    {
-      id: 0,
-      title: "Do the Macarena.",
-      complete: true
-    }
-  ]
+  todos: []
 };
 
+let todoId = 0;
+
 const todoReducer = (state = initialState, action) => {
-  return state;
+  switch (action.type) {
+    case "ADD_TODO": {
+      todoId++;
+      return {
+        todos: [
+          ...state.todos,
+          {
+            id: todoId,
+            title: action.payload,
+            complete: false
+          }
+        ]
+      };
+    }
+
+    case "TOGGLE_TODO":
+      return {
+        todos: state.todos.map(
+          td =>
+            td.id === action.payload ? { ...td, complete: !td.complete } : td
+        )
+      };
+
+    default:
+      return state;
+  }
 };
 
 export default todoReducer;

@@ -1,15 +1,30 @@
 import React from "react";
 import { connect } from "react-redux";
 
-const mapStateToProps = props => ({});
+const mapDispatchToProps = dispatch => ({
+  addTodo: text => dispatch({ type: "ADD_TODO", payload: text })
+});
 
-const mapDispatchToProps = dispatch => ({});
+const TodoForm = props => {
+  let input;
+  return (
+    <div>
+      <div>
+        <form
+          onSubmit={event => {
+            event.preventDefault();
+            if (!input.value) return;
+            props.addTodo(input.value);
+            input.value = "";
+            input.focus();
+          }}
+        >
+          <input type="text" placeholder="task" ref={node => (input = node)} />
+          <button type="submit">add</button>
+        </form>
+      </div>
+    </div>
+  );
+};
 
-const TodoForm = () => (
-  <div>
-    <input type="text" placeholder="task" />
-    <button>add</button>
-  </div>
-);
-
-export default connect()(TodoForm);
+export default connect(null, mapDispatchToProps)(TodoForm);
